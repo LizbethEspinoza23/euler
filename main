@@ -1,0 +1,65 @@
+% Parámetros de salida:
+%-------------------------------------------------------------------
+% res1, res2: resultados de aproximación de la ecuación diferencial | 
+%-------------------------------------------------------------------
+
+clc; clear; 
+syms x;
+syms y; 
+
+% Ejemplo 1
+f=0.1*sqrt(y)+0.4*x.^2;
+a=2;
+yo=4;
+fin=2.5; 
+n=10;
+res1 = eulerdiferencial(a, yo, n, fin, f);
+
+
+% Ejemplo 2 
+f=y-x; 
+a=0;
+yo=1/2;
+fin=1;
+n=10;
+res2 = eulerdiferencial(a, yo, n, fin, f); 
+
+% Calculo de las EDO exactas para estimar el error 
+
+function ydash=f(y,x)
+  ydash=0.1*sqrt(y)+0.4*x.^2;
+end
+
+x0=2;
+y0=4;
+n=10; 
+x_final=2.5;
+h=(x_final-x0)/n;
+x=[x0:h:x_final];
+y=lsode("f", y0, x);
+real1=y(end,end);
+
+
+function ydash=f(y,x)
+  ydash=x-y;
+end
+
+x0=0;
+y0=1/2;
+n=10;
+x_final=1;
+h=(x_final-x0)/n;
+x=[x0:h:x_final];
+y=lsode("f", y0, x);
+real2=y(end,end);
+
+error1=abs(real1-res1);
+error2=abs(real2-res2); 
+
+res1
+error1
+res2
+error2
+
+
+
